@@ -28,17 +28,18 @@ func main() {
 		fmt.Println("Usage: keygen [netkey]")
 		return
 	}
-	netkey, err := strconv.Atoi(os.Args[1])
+	netkey, err := strconv.ParseUint(os.Args[1], 10, 8)
 	if err != nil {
 		log.Fatal(err)
 	}
+	netkeyByte := byte(netkey)
 
 	pub, priv, err := NewKey()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	addr := EncodeAddress(hash160(pub), byte(netkey))
+	addr := EncodeAddress(hash160(pub), netkeyByte)
 	fmt.Println("addr:", addr)
 	fmt.Println("pubk:", hex.EncodeToString(pub))
 	fmt.Println("priv:", hex.EncodeToString(priv))
